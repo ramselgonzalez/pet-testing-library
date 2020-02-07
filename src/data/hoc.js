@@ -1,7 +1,14 @@
 import { graphql } from '@apollo/react-hoc';
-import { AddPet, DeletePet, GetUser, LogIn } from './queries';
+import { AddPet, DeletePet, GetUser, GetPet, LogIn } from './queries';
 
 export const withUser = graphql(GetUser);
+
+export const withPet = graphql(GetPet, {
+  props: ({ data }) => ({ ...data }),
+  options: ({ match }) => ({
+    variables: { id: match.params.petId }
+  })
+});
 
 export const withLogIn = graphql(LogIn, {
   props: ({ mutate }) => ({

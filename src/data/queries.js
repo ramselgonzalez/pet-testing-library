@@ -17,6 +17,17 @@ export const GetUser = gql`
   }
 `;
 
+export const GetPet = gql`
+  query GetPet($id: ID!) {
+    pet(id: $id) {
+      id
+      age
+      name
+      species
+    }
+  }
+`;
+
 export const LogIn = gql`
   mutation LogIn($email: String!, $password: String!) {
     logIn(email: $email, password: $password) {
