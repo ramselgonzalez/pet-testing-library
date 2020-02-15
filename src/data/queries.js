@@ -24,6 +24,11 @@ export const GetPet = gql`
       age
       name
       species
+      toys {
+        id
+        description
+        name
+      }
     }
   }
 `;
@@ -36,6 +41,27 @@ export const LogIn = gql`
         id
         email
       }
+    }
+  }
+`;
+
+export const SignUp = gql`
+  mutation SignUp(
+    $firstName: String!
+    $lastName: String!
+    $email: String!
+    $password: String!
+  ) {
+    signUp(
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      password: $password
+    ) {
+      id
+      firstName
+      lastName
+      email
     }
   }
 `;
@@ -58,6 +84,25 @@ export const DeletePet = gql`
       age
       name
       species
+    }
+  }
+`;
+
+export const AddToy = gql`
+  mutation addToy($id: ID!, $description: String!, $name: ToyEnum!) {
+    addToy(id: $id, description: $description, name: $name) {
+      id
+      name
+      description
+    }
+  }
+`;
+
+export const DeleteToy = gql`
+  mutation deleteToy($id: ID!) {
+    deleteToy(id: $id) {
+      id
+      name
     }
   }
 `;

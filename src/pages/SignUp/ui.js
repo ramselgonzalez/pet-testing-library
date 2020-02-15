@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Button,
-  Checkbox,
   Container,
-  FormControlLabel,
   Link,
   Paper,
   TextField,
@@ -13,19 +11,49 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 
-class LogIn extends Component {
+class SignUp extends Component {
   render() {
-    const { classes, email, onInputChange, onLogIn, password } = this.props;
+    const {
+      classes,
+      email,
+      firstName,
+      lastName,
+      onInputChange,
+      password,
+      onSignUp
+    } = this.props;
     return (
       <Container component="main" maxWidth="xs">
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Log In
+            Sign Up
           </Typography>
-          <form className={classes.form} noValidate onSubmit={onLogIn}>
+          <form className={classes.form} noValidate onSubmit={onSignUp}>
+            <TextField
+              inputProps={{ 'aria-label': 'firstName' }}
+              autoFocus
+              fullWidth
+              label="First Name"
+              margin="normal"
+              name="firstName"
+              onChange={onInputChange}
+              required
+              value={firstName}
+              variant="outlined"
+            />
+            <TextField
+              inputProps={{ 'aria-label': 'lastName' }}
+              fullWidth
+              label="Last Name"
+              margin="normal"
+              name="lastName"
+              onChange={onInputChange}
+              required
+              value={lastName}
+              variant="outlined"
+            />
             <TextField
               inputProps={{ 'aria-label': 'email' }}
-              autoFocus
               fullWidth
               label="Email Address"
               margin="normal"
@@ -47,22 +75,18 @@ class LogIn extends Component {
               value={password}
               variant="outlined"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               className={classes.submit}
-              data-testid="log-in-button"
+              data-testid="sign-up-button"
               fullWidth
               type="submit"
               variant="contained"
             >
-              Log In
+              Sign Up
             </Button>
           </form>
-          <Link component={RouterLink} to="/sign-up" className={classes.link}>
-            Don't have an account? Sign Up
+          <Link component={RouterLink} to="/log-in" className={classes.link}>
+            Already have an acccount? Log in here.
           </Link>
         </Paper>
       </Container>
@@ -70,4 +94,4 @@ class LogIn extends Component {
   }
 }
 
-export const LogInUI = withStyles(styles)(LogIn);
+export const SignUpUI = withStyles(styles)(SignUp);

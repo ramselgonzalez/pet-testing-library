@@ -1,7 +1,18 @@
 import { graphql } from '@apollo/react-hoc';
-import { AddPet, DeletePet, GetUser, GetPet, LogIn } from './queries';
+import {
+  AddPet,
+  DeletePet,
+  AddToy,
+  DeleteToy,
+  GetUser,
+  GetPet,
+  LogIn,
+  SignUp
+} from './queries';
 
-export const withUser = graphql(GetUser);
+export const withUser = graphql(GetUser, {
+  props: ({ data }) => ({ ...data })
+});
 
 export const withPet = graphql(GetPet, {
   props: ({ data }) => ({ ...data }),
@@ -16,6 +27,21 @@ export const withLogIn = graphql(LogIn, {
       try {
         const response = await mutate({ variables: { email, password } });
         return response.data.logIn;
+      } catch (err) {
+        throw err;
+      }
+    }
+  })
+});
+
+export const withSignUp = graphql(SignUp, {
+  props: ({ mutate }) => ({
+    signUp: async (firstName, lastName, email, password) => {
+      try {
+        const response = await mutate({
+          variables: { firstName, lastName, email, password }
+        });
+        return response.data.signUp;
       } catch (err) {
         throw err;
       }
@@ -59,6 +85,29 @@ export const withDeletePet = graphql(DeletePet, {
           }
         });
         return response.data.deletePet;
+      } catch (err) {
+        throw err;
+      }
+    }
+  })
+});
+
+export const withAddToy = graphql(AddToy, {
+  props: ({ mutate }) => ({
+    addToy: async (id, description, name) => {
+      try {
+        const response = await mutate({
+          variables: { id, description, name },
+          update: async (proxy, { data: { addToy } }) => {
+            const data = await proxy.readQuery({
+              query: GetPet,
+              variables: { id }
+            });
+            data.pet.toys.push(addToy);
+            proxy.writeQuery({ query: GetPet, data });
+          }
+        });
+        return response.data.addPet;
       } catch (err) {
         throw err;
       }

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { AuthContext } from '../../provider/auth';
 import { SidebarUI } from './ui';
 
 export class Sidebar extends Component {
-  handleLogOut = () => {
-    const { history } = this.props;
-    localStorage.removeItem('token');
-    history.push('/log-in');
-  };
   render() {
-    return <SidebarUI onLogOut={this.handleLogOut} />;
+    return (
+      <AuthContext.Consumer>
+        {({ logOut }) => <SidebarUI onLogOut={logOut} />}
+      </AuthContext.Consumer>
+    );
   }
 }
 

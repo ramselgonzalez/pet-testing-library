@@ -44,7 +44,7 @@ class Sidebar extends Component {
             <ListItemIcon>
               <ExitToApp />
             </ListItemIcon>
-            <ListItemText primary="SignOut" />
+            <ListItemText primary="Sign Out" />
           </ListItem>
         </Box>
       </Drawer>

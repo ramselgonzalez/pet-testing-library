@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withLogIn } from '../../data/hoc';
 import { LogInUI } from './ui';
 
 class LogIn extends Component {
@@ -18,11 +17,7 @@ class LogIn extends Component {
     e.preventDefault();
 
     try {
-      const user = await logIn(email, password);
-      if (!user) {
-        throw new Error('Something went wrong.');
-      }
-      localStorage.setItem('token', user.token);
+      await logIn(email, password);
       history.push('/profile');
     } catch (error) {
       throw error;
@@ -42,4 +37,4 @@ class LogIn extends Component {
   }
 }
 
-export const LogInContainer = withLogIn(LogIn);
+export const LogInContainer = LogIn;

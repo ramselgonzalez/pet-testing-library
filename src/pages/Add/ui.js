@@ -15,6 +15,17 @@ import { species as speciesValues } from '../../constants/species';
 import { styles } from './styles';
 
 class Add extends Component {
+  state = {
+    labelWidth: 0
+  };
+
+  selectLabel = React.createRef();
+
+  componentDidMount() {
+    const { current } = this.selectLabel;
+    this.setState({ labelWidth: current.offsetWidth });
+  }
+
   render() {
     const {
       addedPet,
@@ -28,6 +39,7 @@ class Add extends Component {
       onSubmit,
       species
     } = this.props;
+    const { labelWidth } = this.state;
     return (
       <>
         <header>
@@ -52,11 +64,14 @@ class Add extends Component {
               variant="outlined"
             />
             <FormControl fullWidth margin="normal" required variant="outlined">
-              <InputLabel id="pet-species-label">Species</InputLabel>
+              <InputLabel id="pet-species-label" ref={this.selectLabel}>
+                Species
+              </InputLabel>
               <Select
                 disabled={isSubmitting}
                 id="pet-species"
                 labelId="pet-species-label"
+                labelWidth={labelWidth}
                 name="species"
                 onChange={onInputChange}
                 value={species}
