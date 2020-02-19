@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withPet, withAddToy } from '../../data/hoc';
+import { withPet, withAddToy } from '../../graphql/hoc';
 import { formatPet } from '../../selectors';
 import { PetUI } from './ui';
 

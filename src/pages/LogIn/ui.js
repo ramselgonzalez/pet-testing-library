@@ -28,6 +28,7 @@ class LogIn extends Component {
               autoFocus
               fullWidth
               label="Email Address"
+              id="email"
               margin="normal"
               name="email"
               onChange={onInputChange}
@@ -53,7 +54,6 @@ class LogIn extends Component {
             />
             <Button
               className={classes.submit}
-              data-testid="log-in-button"
               fullWidth
               type="submit"
               variant="contained"

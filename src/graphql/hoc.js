@@ -3,7 +3,6 @@ import {
   AddPet,
   DeletePet,
   AddToy,
-  DeleteToy,
   GetUser,
   GetPet,
   LogIn,

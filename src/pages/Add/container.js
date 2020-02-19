@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withAddPet } from '../../data/hoc';
+import { withAddPet } from '../../graphql/hoc';
 import { AddUI } from './ui';
 
 const DEFAULT_FORM = {

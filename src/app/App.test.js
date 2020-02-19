@@ -3,7 +3,7 @@ import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/react-testing';
 import { AuthProvider } from '../provider/auth';
-import { GetUser, GetPet, LogIn, SignUp } from '../data/queries';
+import { GetUser, GetPet, LogIn, SignUp } from '../graphql/queries';
 import { getPetMock, getUserMock, getToyMock } from '../mocks';
 import App from '.';
 
@@ -59,6 +59,9 @@ const signUpRequestMock = {
   }
 };
 
+// We can render the whole app inside of a router test if certain buttons
+// navigate to pages. We can set an initial route and assert that we are
+// actually on the page we should be on.
 test('can sign up a new account', async () => {
   const initialRoute = '/sign-up';
   const mocks = [signUpRequestMock];
@@ -110,7 +113,7 @@ test('can login and redirected to profile page and log out', async () => {
   const initialRoute = '/log-in';
   const mocks = [logInRequestMock, getUserRequestMock];
   const { request } = logInRequestMock;
-  const { getByText, getByTestId, getByLabelText } = render(
+  const { getByText, getByLabelText, getByRole, findByText } = render(
     <MockedProvider mocks={mocks} addTypename={false}>
       <MemoryRouter initialEntries={[initialRoute]}>
         <AuthProvider>
@@ -119,6 +122,9 @@ test('can login and redirected to profile page and log out', async () => {
       </MemoryRouter>
     </MockedProvider>
   );
+
+  const logInHeader = getByRole('heading');
+  expect(logInHeader).toHaveTextContent(/log in/i);
 
   const emailInput = getByLabelText('email');
   fireEvent.change(emailInput, {
@@ -130,33 +136,26 @@ test('can login and redirected to profile page and log out', async () => {
     target: { value: request.variables.password }
   });
 
-  const logInButton = getByTestId('log-in-button');
+  const logInButton = getByRole('button');
   fireEvent.click(logInButton);
 
-  const sidebarHeading = await waitForElement(() =>
-    getByText(/pet testing library/i)
-  );
+  const sidebarHeading = await findByText(/pet testing library/i);
   expect(sidebarHeading).toBeInTheDocument();
 
   const signOutButton = getByText(/sign out/i);
   fireEvent.click(signOutButton);
 
   // assert that the user is redirected to the log in page
-  const logInPageText = await waitForElement(() =>
-    getByText(/don't have an account/i)
-  );
+  const logInPageText = await findByText(/don't have an account/i);
   expect(logInPageText).toBeInTheDocument();
 });
 
-// We can render the whole app inside of a router test if certain buttons
-// navigate to pages. We can set an initial route and assert that we are
-// actually on the page we should be on.
 test('can navigate to pet profile page', async () => {
   // Mock out user verification to bypass login
   localStorage.setItem('token', 'test-token');
   const initialRoute = '/profile';
   const mocks = [getUserRequestMock, getPetRequestMock];
-  const { getByText } = render(
+  const { getByText, findByText } = render(
     <MockedProvider mocks={mocks} addTypename={false}>
       <MemoryRouter initialEntries={[initialRoute]}>
         <AuthProvider>
@@ -167,9 +166,7 @@ test('can navigate to pet profile page', async () => {
   );
 
   // Initial route lands on the profile page.
-  const profileHeader = await waitForElement(() =>
-    getByText(/welcome, ramsel./i)
-  );
+  const profileHeader = await findByText(/welcome, ramsel./i);
   expect(profileHeader).toBeInTheDocument();
 
   // Click on the pet card view button.
@@ -177,7 +174,7 @@ test('can navigate to pet profile page', async () => {
   fireEvent.click(viewPetButton);
 
   // Assert that we've landed on the pet profile page.
-  const petProfileHeader = await waitForElement(() => getByText(/ike/i));
+  const petProfileHeader = await findByText(/ike/i);
   expect(petProfileHeader).toBeInTheDocument();
 
   // Click the 'Add A Pet' navbar icon.

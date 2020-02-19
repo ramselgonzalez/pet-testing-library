@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withDeletePet, withUser } from '../../data/hoc';
+import { withDeletePet, withUser } from '../../graphql/hoc';
 import { formatUser } from '../../selectors';
 import { ProfileUI } from './ui';
 

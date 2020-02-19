@@ -8,7 +8,7 @@ import {
 } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import { MockedProvider } from '@apollo/react-testing';
-import { GetPet, AddToy } from '../../data/queries';
+import { GetPet, AddToy } from '../../graphql/queries';
 import { getPetMock, getToyMock } from '../../mocks';
 import { Pet } from '.';
 
@@ -91,11 +91,11 @@ test('it adds a toy successfully', async () => {
   const { request: addRequest } = addToyRequestMock;
   const route = `/pet/${getRequest.variables.id}`;
   const {
-    debug,
     getByLabelText,
     getByTestId,
     getAllByRole,
-    getByText
+    getByText,
+    findByText
   } = render(
     <MockedProvider mocks={mocks} addTypename={false}>
       <MemoryRouter initialEntries={[route]}>
@@ -104,7 +104,7 @@ test('it adds a toy successfully', async () => {
     </MockedProvider>
   );
 
-  const headerElement = await waitForElement(() => getByText(/ike/i));
+  const headerElement = await findByText(/ike/i);
   expect(headerElement).toBeInTheDocument();
 
   const addToyButton = getByText(/add a toy/i);

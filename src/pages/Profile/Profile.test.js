@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, waitForElement } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
-import { GetUser, DeletePet } from '../../data/queries';
+import { GetUser, DeletePet } from '../../graphql/queries';
 import { getPetMock, getUserMock } from '../../mocks';
 import { Profile } from '.';
 

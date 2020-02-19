@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withLogIn, withSignUp } from '../data/hoc';
+import { withLogIn, withSignUp } from '../graphql/hoc';
 export const AuthContext = React.createContext();
 
 class AuthProviderContainer extends Component {

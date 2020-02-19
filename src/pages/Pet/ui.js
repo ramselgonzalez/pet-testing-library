@@ -36,7 +36,6 @@ class Pet extends Component {
 
   render() {
     const {
-      addedToy,
       classes,
       description,
       error,
